@@ -1,0 +1,10 @@
+.venv/
+venv/
+wandb/
+outputs/
+*.pt
+*.pth
+*.ckpt
+*.wandb
+__pycache__/
+.ipynb_checkpoints/

@@ -1,0 +1,40 @@
+#!/bin/bash
+#SBATCH --job-name=Convnext_CheXpert_Train
+#SBATCH --partition=gpu
+#SBATCH --qos=public
+#SBATCH --gpus=1
+#SBATCH --mem=32G
+#SBATCH --cpus-per-task=8
+#SBATCH --time=16:00:00
+#SBATCH --array=1-6
+#SBATCH --output=/home/pchalla7/output/convnextfinal%A_%a.out
+#SBATCH --error=/home/pchalla7/output/convnextfinal%A_%a.err
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=pchalla7@asu.edu
+#SBATCH --export=NONE
+
+echo "=== Starting ConvNext GPU Training Job (Array Task ${SLURM_ARRAY_TASK_ID}) ==="
+date
+
+# Purge any inherited modules to ensure a clean environment
+module purge
+
+# Load necessary modules, like CUDA
+module load cuda-12.6.1-gcc-12.1.0
+
+# --- REQUIRED: Activate your Python virtual environment ---
+# Replace '/path/to/your/venv' with the actual path to your virtual environment.
+#source activate /home/smanika3/.conda/envs/swin_pytorch_env
+#source /path/to/your/venv/bin/activate
+
+
+# Navigate to the directory containing your script.
+# $SLURM_SUBMIT_DIR is a variable that points to the directory where you submitted the job.
+cd "$SLURM_SUBMIT_DIR"
+
+# --- Run your Python script ---
+python3 -u final_train.py
+
+echo "=== GPU Training Job Finished (Array Task ${SLURM_ARRAY_TASK_ID}) ==="
+date
+
